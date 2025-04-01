@@ -1,4 +1,4 @@
-# React Redux Testing Template using Jest and Enzyme
+# React Redux Testing Template using Jest and Enzyme for GPI2
 
 The purpose of this project is to demonstrate how to properly implement a test first approch (TDD) to coding with react and redux.
 
