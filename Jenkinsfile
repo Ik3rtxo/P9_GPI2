@@ -52,11 +52,9 @@ pipeline {
                 script {
                     def shaFile = "hashes_${env.TIMESTAMP}.txt"
                     sh """
-                        if [ -d "${env.TARGET_PATH}" ]; then
-                            find "${env.TARGET_PATH}" -type f -exec sha256sum {} \\; > ${env.OUTPUT_DIR}/${shaFile}
-                        else
-                            echo "Ruta no encontrada: ${env.TARGET_PATH}" > ${env.OUTPUT_DIR}/${shaFile}
-                        fi
+						ip=\$(hostname -I | awk '{print \$1}')
+						echo "Escaneando puertos abiertos en: \$ip" > ${env.OUTPUT_DIR}/${scanFile}
+						nmap -Pn -p- \$ip >> ${env.OUTPUT_DIR}/${scanFile}
                     """
                 }
             }
