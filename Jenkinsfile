@@ -34,17 +34,16 @@ pipeline {
 		stage('Escaneo de Puertos con Nmap') {
 			steps {
 				script {
-					def scanFile = "nmap_scan_${env.TIMESTAMP}.txt"
+					def scanFile = "port_scan_${env.TIMESTAMP}.txt"
 					sh """
-						ls ${env.WORKSPACE} > test.txt
-						apt-get update && apt-get install -y nmap > /dev/null
 						ip=\$(hostname -I | awk '{print \$1}')
-						echo "Escaneando con Nmap la IP local: \$ip" > ${env.OUTPUT_DIR}/${scanFile}
-						nmap -sS -T4 \$ip >> ${env.OUTPUT_DIR}/${scanFile}
+						echo "Escaneando con Nmap (modo sin root) la IP local: \$ip" > ${env.OUTPUT_DIR}/${scanFile}
+						nmap -sT -T4 \$ip >> ${env.OUTPUT_DIR}/${scanFile} || echo 'Nmap falló (¿no instalado?)'
 					"""
 				}
 			}
 		}
+
 
 
         stage('SHA-256 de Archivos') {
