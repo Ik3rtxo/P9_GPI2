@@ -4,7 +4,7 @@ pipeline {
     environment {
         TIMESTAMP = "${new Date().format('yyyyMMdd_HHmmss')}"
         OUTPUT_DIR = "security_audit_${env.TIMESTAMP}"
-        TARGET_PATH = "${env.WORKSPACE}/src/actions/index.js"
+        TARGET_PATH = "${env.WORKSPACE}/src/index.js"
     }
 
     stages {
