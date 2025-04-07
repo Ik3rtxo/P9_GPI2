@@ -34,15 +34,16 @@ pipeline {
 		stage('Escaneo de Puertos con Nmap') {
 			steps {
 				script {
+					def ip = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true).trim()
 					def scanFile = "port_scan_${env.TIMESTAMP}.txt"
 					sh """
-						ip=\$(hostname -I | awk '{print \$1}')
-						echo "Escaneando con Nmap (modo sin root) la IP local: \$ip" > ${env.OUTPUT_DIR}/${scanFile}
-						nmap -sT -T4 \$ip >> ${env.OUTPUT_DIR}/${scanFile} || echo 'Nmap falló (¿no instalado?)'
+						echo "Escaneando con Nmap (modo sin root) la IP local: ${ip}" > ${env.OUTPUT_DIR}/${scanFile}
+						nmap -sT -T4 ${ip} >> ${env.OUTPUT_DIR}/${scanFile} || echo 'Nmap no está instalado o falló.'
 					"""
 				}
 			}
 		}
+
 
 
 
