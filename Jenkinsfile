@@ -12,6 +12,7 @@ pipeline {
         stage('Preparar Directorio') {
             steps {
                 sh 'mkdir -p $OUTPUT_DIR'
+                sh 'ls 
             }
         }
 
@@ -31,18 +32,21 @@ pipeline {
             }
         }
 
-        stage('Escaneo de Puertos Locales') {
-            steps {
-                script {
-                    def scanFile = "port_scan_${env.TIMESTAMP}.txt"
-                    sh """
-                        ip=\$(hostname -I | awk '{print \$1}')
-                        echo "Escaneando IP local: \$ip" > ${env.OUTPUT_DIR}/${scanFile}
-                        nc -zv \$ip 1-1024 2>&1 | grep succeeded >> ${env.OUTPUT_DIR}/${scanFile} || echo 'No hay puertos abiertos'
-                    """
-                }
-            }
-        }
+		stage('Escaneo de Puertos con Nmap') {
+			steps {
+				script {
+					def scanFile = "nmap_scan_${env.TIMESTAMP}.txt"
+					sh """
+						ls ${env.WORKSPACE} > test.txt
+						apt-get update && apt-get install -y nmap > /dev/null
+						ip=\$(hostname -I | awk '{print \$1}')
+						echo "Escaneando con Nmap la IP local: \$ip" > ${env.OUTPUT_DIR}/${scanFile}
+						nmap -sS -T4 \$ip >> ${env.OUTPUT_DIR}/${scanFile}
+					"""
+				}
+			}
+		}
+
 
         stage('SHA-256 de Archivos') {
             steps {
