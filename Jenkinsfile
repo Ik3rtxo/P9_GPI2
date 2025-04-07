@@ -18,13 +18,13 @@ pipeline {
         stage('Versiones del Sistema') {
             steps {
                 script {
-                    def fileName = "system_info_${env.TIMESTAMP}.txt"
+					def filePath = "${env.OUTPUT_DIR}/system_info_${env.TIMESTAMP}.txt"
 					sh """
-						echo 'Java Version:' > \$OUTPUT_DIR/\$fileName
-						java -version 2>&1 | tee -a \$OUTPUT_DIR/\$fileName
+						echo 'Java Version:' > "${filePath}"
+						java -version 2>&1 | tee -a "${filePath}"
 
-						echo '\\nJenkins Version:' >> \$OUTPUT_DIR/\$fileName
-						curl -sI http://localhost:8080 | grep -i 'X-Jenkins' | grep -v 'Session' | awk '{print \$2}' >> \$OUTPUT_DIR/\$fileName || echo 'No se pudo obtener versión Jenkins'
+						echo '\\nJenkins Version:' >> "${filePath}"
+						curl -sI http://localhost:8080 | grep -i 'X-Jenkins' | grep -v 'Session' | awk '{print \$2}' >> "${filePath}" || echo 'No se pudo obtener versión Jenkins'
 					"""
 
                 }
