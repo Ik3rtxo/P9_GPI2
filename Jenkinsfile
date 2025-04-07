@@ -4,7 +4,7 @@ pipeline {
     environment {
         TIMESTAMP = "${new Date().format('yyyyMMdd_HHmmss')}"
         OUTPUT_DIR = "security_audit_${env.TIMESTAMP}"
-        TARGET_PATH = "${env.WORKSPACE}/folderName/subfolderName/projectNameFile"
+        TARGET_PATH = "${env.WORKSPACE}/src/actions/index.js"
     }
 
     stages {
@@ -24,7 +24,7 @@ pipeline {
                         java -version 2>&1 | tee -a ${env.OUTPUT_DIR}/${fileName}
                         
                         echo '\\nJenkins Version:' >> ${env.OUTPUT_DIR}/${fileName}
-                        curl -s http://localhost:9090/api/json?pretty=true | jq '.version' >> ${env.OUTPUT_DIR}/${fileName} || echo 'No se pudo obtener versión Jenkins'
+                        curl -sI http://localhost:8080 | grep -i 'X-Jenkins' | grep -v 'Session' | awk '{print $2}' >> ${env.OUTPUT_DIR}/${fileName} || echo 'No se pudo obtener versión Jenkins'
                     """
                 }
             }
