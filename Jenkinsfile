@@ -24,7 +24,7 @@ pipeline {
                         java -version 2>&1 | tee -a ${env.OUTPUT_DIR}/${fileName}
                         
                         echo '\\nJenkins Version:' >> ${env.OUTPUT_DIR}/${fileName}
-                        curl -sI http://localhost:8080 | grep -i 'X-Jenkins' | grep -v 'Session' | awk '{print $2}' >> ${env.OUTPUT_DIR}/${fileName} || echo 'No se pudo obtener versión Jenkins'
+                         curl -sI http://localhost:8080 | grep -i 'X-Jenkins' | grep -v 'Session' | awk '{print $2}' >> ${env.OUTPUT_DIR}/${fileName} || echo 'No se pudo obtener versión Jenkins'
                     """
                 }
             }
