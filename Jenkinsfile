@@ -12,7 +12,6 @@ pipeline {
         stage('Preparar Directorio') {
             steps {
                 sh 'mkdir -p $OUTPUT_DIR'
-                sh 'ls 
             }
         }
 
