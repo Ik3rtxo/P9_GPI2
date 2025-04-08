@@ -50,7 +50,7 @@ pipeline {
                     def shaFile = "hashes_${env.TIMESTAMP}.txt"
                     sh """
                         echo "Generando hashes SHA-256 de los archivos..." > ${env.OUTPUT_DIR}/${shaFile}
-                        find ${env.OUTPUT_DIR} -type f -exec sha256sum {} \\; >> ${env.OUTPUT_DIR}/${shaFile}
+                        find ${env.TARGET_PATH} -type f -exec sha256sum {} \\; >> ${env.OUTPUT_DIR}/${shaFile}
                     """
                 }
             }
